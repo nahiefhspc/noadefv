@@ -12,8 +12,8 @@ import subprocess
 app = Flask(__name__)
 
 # Your Telegram bot token and channel
-TOKEN = 'YOUR_BOT_TOKEN'
-CHANNEL_ID = '@YOUR_CHANNEL_ID'  # Your channel ID
+TOKEN = '7193921126:AAFOJVvniqaxqFzePHfHlgK0I23Rwwx5sEw'
+CHANNEL_ID = '-1002388515011'  # Your channel ID
 
 # URL and headers for checking the user
 url = "https://isaclearningapi.akamai.net.in/get/check_user_exist"
