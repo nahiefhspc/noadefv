@@ -6,13 +6,14 @@ from flask import Flask, request
 from telegram import Update
 from telegram.ext import Application, CommandHandler, ContextTypes
 from threading import Thread
+import subprocess
 
 # Initialize Flask app
 app = Flask(__name__)
 
-# Your Telegram bot token and chaT
-TOKEN = os.environ.get("BOT_TOKEN", "7880934596:AAGHo26aR0PjwrSyXY7xEVhC9nW95ejKVDc")
-CHANNEL_ID = os.environ.get("CHANNEL_ID", "-1002454808208")  # Your channel ID
+# Your Telegram bot token and channel
+TOKEN = 'YOUR_BOT_TOKEN'
+CHANNEL_ID = '@YOUR_CHANNEL_ID'  # Your channel ID
 
 # URL and headers for checking the user
 url = "https://isaclearningapi.akamai.net.in/get/check_user_exist"
@@ -36,8 +37,8 @@ def check_user_exist(phone_number):
 
 # Function to run the number check and send progress updates
 async def check_numbers(update: Update, context: ContextTypes.DEFAULT_TYPE):
-    total_numbers = 5000000000
-    start_number = 5000000000
+    total_numbers = 1000
+    start_number = 9000000000
     checked_numbers = 0
     last_checked_number = None
     start_time = time.time()
@@ -106,10 +107,27 @@ def webhook():
 def start_flask():
     app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
 
+# Function to monitor the server every 2 minutes
+def monitor_server():
+    while True:
+        try:
+            response = requests.get("http://localhost:5000")
+            if response.status_code != 200:
+                print("Server not responding, restarting...")
+                subprocess.Popen(["python3", "main.py"])
+        except requests.RequestException:
+            print("Server error, attempting to restart...")
+            subprocess.Popen(["python3", "main.py"])
+        time.sleep(120)  # Check every 2 minutes
+
 if __name__ == "__main__":
     # Run the Flask and Bot in separate threads
     thread_flask = Thread(target=start_flask)
     thread_flask.start()
+
+    # Run server monitoring in a separate thread
+    monitor_thread = Thread(target=monitor_server)
+    monitor_thread.start()
 
     # Run the bot
     run_bot()
