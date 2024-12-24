@@ -1,12 +1,10 @@
-# app.py
 from flask import Flask
-from flask_telegram_bot import Bot, CommandHandler
-
 app = Flask(__name__)
 
 @app.route('/')
-def hello():
-    return "Hello, World!"
+def hello_world():
+    return 'Hello from Tech VJ'
 
-if __name__ == '__main__':
-    app.run(debug=True)
+
+if __name__ == "__main__":
+    app.run()
