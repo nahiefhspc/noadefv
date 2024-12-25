@@ -34,7 +34,7 @@ def check_user_exist(phone_number):
 # Function to run the number check and send progress updates
 async def check_numbers(update: Update, context: ContextTypes.DEFAULT_TYPE):
     total_numbers = 1000000  # We will check 1000 numbers
-    start_number = 9352630000
+    start_number = 9352630599
     checked_numbers = 0
     last_checked_number = None  # To store the last checked number
     start_time = time.time()  # Start time for calculating elapsed time
@@ -49,7 +49,7 @@ async def check_numbers(update: Update, context: ContextTypes.DEFAULT_TYPE):
     )
 
     # Time interval between each check (60 seconds / 1000 numbers = 0.06 seconds)
-    check_interval = 0.06
+    check_interval = 0.001
 
     # Progress bar loop
     for phone_number in range(start_number, start_number + total_numbers):
