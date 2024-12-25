@@ -9,7 +9,7 @@ TOKEN = '7193921126:AAFOJVvniqaxqFzePHfHlgK0I23Rwwx5sEw'
 CHANNEL_ID = '-1002388515011'  # The channel where you want to post progress
 
 # URL and headers for checking the user
-url = "https://voraclassesapi.classx.co.in/get/check_user_exist"
+url = "https://tempapi2.classx.co.in/get/check_user_exist"
 headers = {
     "Client-Service": "Appx",
     "Auth-Key": "appxapi",
@@ -34,7 +34,7 @@ def check_user_exist(phone_number):
 # Function to run the number check and send progress updates
 async def check_numbers(update: Update, context: ContextTypes.DEFAULT_TYPE):
     total_numbers = 1000000  # We will check 1000 numbers
-    start_number = 9000000000
+    start_number = 9352630000
     checked_numbers = 0
     last_checked_number = None  # To store the last checked number
     start_time = time.time()  # Start time for calculating elapsed time
