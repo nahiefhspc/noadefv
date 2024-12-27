@@ -128,7 +128,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for course in COURSES
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("<b>🏅Welcome to Our Bot This is made by HACKHEIST 😈</b>\n\n<b>If you don't know how to use bot Click on below button 🥰\n<a href='https://t.me/hotousebotes/6'>𝐇𝐎𝐖 𝐓𝐎 𝐔𝐒𝐄 𝐁𝐎𝐓 ?🧐</a></b>\n\nNOTE - M@TION tech Team wants to Remove this bot message me @HACKHEISTBOT\nTech Team Check <b><a href='https://t.me/RemoveIIT/3'>𝗚𝗨𝗜𝗗𝗘𝗟𝗜𝗡𝗘𝗦</a></b>\n\n<b><a href='https://yashyasag.github.io/hiddens'>✮:▹ 𝗖𝗹𝗶𝗰𝗸 𝗧𝗼 𝗚𝗲𝘁 𝗠𝗢𝗥𝗘 🤩</a></b>", 
+    await update.message.reply_text("<b>🏅Welcome to Our Bot This is made by HACKHEIST 😈</b>\n\n<b>If you don't know how to use bot Click on below button 🥰\n<a href='https://t.me/hotousebotes/6'>𝐇𝐎𝐖 𝐓𝐎 𝐔𝐒𝐄 𝐁𝐎𝐓 ?🧐</a></b>\n\nNOTE - M@TION tech Team wants to Remove this bot message me @HACKHEISTBOT\nTech Team Check <b><a href='https://t.me/RemoveIIT/3'>𝗚𝗨𝗜𝗗𝗘𝗟𝗜𝗡𝗘𝗦</a></b>\n\n<b><a href='https://t.me/HIDDEN_OFFICIALS_3/3'>✮:▹ 𝗖𝗹𝗶𝗰𝗸 𝗧𝗼 𝗚𝗲𝘁 𝗠𝗢𝗥𝗘 🤩</a></b>", 
         reply_markup=reply_markup,
         parse_mode='HTML'
     )
