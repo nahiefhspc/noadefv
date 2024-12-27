@@ -244,7 +244,7 @@ def fetch_playback_url(join_url):
 
 def main():
     """Run the bot."""
-    application = Application.builder().token("6811502626:AAG9xT3ZQUmg6CrdIPvQ0kCRJ3W5QL-fuZs").build()
+    application = Application.builder().token("7915696862:AAGg61HVMTydXAK2UrdfclNBRgsDbl_b2rY").build()
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CallbackQueryHandler(course_callback, pattern="^course_"))
