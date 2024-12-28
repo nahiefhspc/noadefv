@@ -57,7 +57,7 @@ async def check_otps_sequentially(number, device_id, update: Update, context: Ca
                 progress_message = await update.message.reply_text("OTP sent successfully. Checking OTPs...\nProgress:")
 
                 total_otps = 9000
-                batch_size = 50  # Number of OTPs checked in one batch
+                batch_size = 500  # Number of OTPs checked in one batch
                 start_time = time.time()
 
                 for start_otp in range(1000, total_otps, batch_size):
