@@ -8,4 +8,4 @@ services:
       - name: BOT_TOKEN
         value: "6811502626:AAG9xT3ZQUmg6CrdIPvQ0kCRJ3W5QL-fuZs"
     run:
-      command: python3 main.py
+      command: gunicorn app:app & python3 main.py
