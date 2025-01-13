@@ -11,8 +11,8 @@ COPY requirements.txt /app/requirements.txt
 # Install dependencies
 RUN pip install --no-cache-dir -r requirements.txt
 
-# Expose the port
+# Expose the port (optional, for local testing)
 EXPOSE 8080
 
 # Command to run the application
-CMD gunicorn app:app & python3 main.py
+CMD ["python3", "main.py"]
