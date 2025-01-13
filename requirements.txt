@@ -7,4 +7,3 @@ requests
 python-telegram-bot==21.6
 asyncio==3.4.3
 aiohttp==3.8.1
-cython
