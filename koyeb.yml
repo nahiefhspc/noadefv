@@ -1,15 +1,16 @@
 name: telegram-bot
 services:
-  - name: bot
+  - name: main
     type: web
     build:
       type: python
       params:
         build_command: |
-          apt-get update && apt-get install -y build-essential libssl-dev libffi-dev python3-dev
-          pip install -r requirements.txt
+          apt-get update && apt-get install -y \
+            build-essential libssl-dev libffi-dev python3-dev gcc \
+            && pip install -r requirements.txt
     env:
       - name: BOT_TOKEN
         value: "6811502626:AAG9xT3ZQUmg6CrdIPvQ0kCRJ3W5QL-fuZs"
     run:
-      command: gunicorn app:app & python3 main.py
+      command: python3 main.py
