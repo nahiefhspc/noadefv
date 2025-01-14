@@ -36,11 +36,21 @@ YEAR_CLASSES = {
     },
     "2025-26": {
         "11th": {
-            "Alpha": "130",
-            "Beta": "131",
+            "Backlog Silver Chem": "131",
+            "Vijeta 1.0 Gold (11+12) Chem": "132",
+            "Vijeta 1.0 Silver (11+12) Chem": "133",
+            "Vijeta 1.0 Diamond (11+12) Chem": "134",
         },
         "12th": {
-            "Gamma": "132",
+            "Vijeta 1.0 Silver Chem": "125",
+            "Vijeta 1.0 Silver (PCM)": "126",
+            "Vijeta 1.0 GOLD Chem": "127",
+            "Vijeta 1.0 GOLD (PCM)": "128",
+            "Vijeta 1.0 Diamond Chem": "129",
+            "Vijeta 1.0 Diamond (PCM)": "130",
+            "Vijeta 1.0 Gold (11+12) Chem": "132",
+            "Vijeta 1.0 Silver (11+12) Chem": "133",
+            "Vijeta 1.0 Diamond (11+12) Chem": "134",
         },
     },
 }
@@ -48,12 +58,7 @@ YEAR_CLASSES = {
 # Mapping of user IDs to indexes
 USER_ID_TO_IDX = {
     "7423360734": 1,
-    "5034929962": 2,
-    "5487643307": 3,
-    "7137002799": 4,
-    "6038536979": 5,
-    "1737051944": 6,
-    "6568611832": 7,
+    "9374253829": 2,
 }
 
 # Function to fetch subjects for a batch
@@ -128,7 +133,7 @@ def fetch_notes(batch_id, subject_id, topic_id):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = str(update.message.from_user.id)
     if user_id not in USER_ID_TO_IDX:
-        await update.message.reply_text("Tere liye nahi hai Bsdk",
+        await update.message.reply_text("You are not a member of the channel. Please join the channel to proceed.",
         parse_mode="HTML",
         protect_content=True
         )
@@ -145,7 +150,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                               protect_content=True)
 
     # Schedule the deletion after 60 seconds
-    
+    job_queue = context.job_queue
+    job_queue.run_once(delete_buttons, 10, context=update.message)
 
 # Function to delete buttons and send a new message after 60 seconds
 async def delete_buttons(context):
@@ -253,7 +259,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
             await query.edit_message_text(text="Select a lesson or view notes:", reply_markup=reply_markup)
         elif notes:
             notes_message = "\n\n".join([f"🌟<a href=\"{html.escape(note['docUrl'])}\">{html.escape(note['docTitle'])}</a>" for note in notes])
-            await query.edit_message_text(text=f"Available Notes:\n\n<b>{notes_message}</b>\n\nBY HACKHEIST 😈 [@TEAM_OPTECH]",
+            await query.edit_message_text(text=f"<b> 𝐀𝐋𝐋 𝐍𝐎𝐓𝐄𝐒 𝐁𝐄𝐋𝐎𝐖 👇</b>\n------------------------------------------------------------\n\n<b>{notes_message}</b>\n------------------------------------------------------------\n\n<b>𝗠𝗮𝗱𝗲 𝗕𝘆 𝗛𝗔𝗖𝗞𝗛𝗘𝗜𝗦𝗧 😈</b>\nCONTACT US - @TEAM_OPTECH\n\nYou Are on Last page for more Lectures,Notes - /start",
             parse_mode="HTML"
             )
         else:
@@ -264,7 +270,7 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
         notes = fetch_notes(batch_id, subject_id, topic_id)
         if notes:
             notes_message = "\n\n".join([f"🌟<a href=\"{html.escape(note['docUrl'])}\">{html.escape(note['docTitle'])}</a>" for note in notes])
-            await query.edit_message_text(text=f"Available Notes\n\n<b>{notes_message}</b>\n\nBY HACKHEIST 😈 [@TEAM_OPTECH]",
+            await query.edit_message_text(text=f"<b> 𝐀𝐋𝐋 𝐍𝐎𝐓𝐄𝐒 𝐁𝐄𝐋𝐎𝐖 👇</b>\n------------------------------------------------------------\n\n<b>{notes_message}</b>\n------------------------------------------------------------\n\n<b>𝗠𝗮𝗱𝗲 𝗕𝘆 𝗛𝗔𝗖𝗞𝗛𝗘𝗜𝗦𝗧 😈</b>\nCONTACT US - @TEAM_OPTECH\n\nYou Are on Last page for more Lectures,Notes - /start",
             parse_mode="HTML"
             )
         else:
