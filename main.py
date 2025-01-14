@@ -58,7 +58,12 @@ YEAR_CLASSES = {
 # Mapping of user IDs to indexes
 USER_ID_TO_IDX = {
     "7423360734": 1,
-    "9374253829": 2,
+    "5034929962": 2,
+    "5487643307": 3,
+    "7137002799": 4,
+    "6038536979": 5,
+    "1737051944": 6,
+    "6568611832": 7,
 }
 
 # Function to fetch subjects for a batch
@@ -150,8 +155,6 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                               protect_content=True)
 
     # Schedule the deletion after 60 seconds
-    job_queue = context.job_queue
-    job_queue.run_once(delete_buttons, 10, context=update.message)
 
 # Function to delete buttons and send a new message after 60 seconds
 async def delete_buttons(context):
