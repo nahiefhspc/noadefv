@@ -128,7 +128,7 @@ def fetch_notes(batch_id, subject_id, topic_id):
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = str(update.message.from_user.id)
     if user_id not in USER_ID_TO_IDX:
-        await update.message.reply_text("You are not a member of the channel. Please join the channel to proceed.",
+        await update.message.reply_text("Tere liye nahi hai Bsdk",
         parse_mode="HTML",
         protect_content=True
         )
@@ -145,8 +145,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                               protect_content=True)
 
     # Schedule the deletion after 60 seconds
-    job_queue = context.job_queue
-    job_queue.run_once(delete_buttons, 10, context=update.message)
+    
 
 # Function to delete buttons and send a new message after 60 seconds
 async def delete_buttons(context):
