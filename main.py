@@ -72,7 +72,7 @@ def fetch_subjects(batch_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "1bdfcd96bc0458b46535bc31f61b953687d10704",
+        "token": "63ffeba72133b618fe082e33c0125e0e3c9c9062",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -89,7 +89,7 @@ def fetch_topics(batch_id, subject_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "1bdfcd96bc0458b46535bc31f61b953687d10704",
+        "token": "63ffeba72133b618fe082e33c0125e0e3c9c9062",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -106,7 +106,7 @@ def fetch_lessons(batch_id, subject_id, topic_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "1bdfcd96bc0458b46535bc31f61b953687d10704",
+        "token": "63ffeba72133b618fe082e33c0125e0e3c9c9062",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -123,7 +123,7 @@ def fetch_notes(batch_id, subject_id, topic_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "1bdfcd96bc0458b46535bc31f61b953687d10704",
+        "token": "63ffeba72133b618fe082e33c0125e0e3c9c9062",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
