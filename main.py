@@ -72,7 +72,7 @@ def fetch_subjects(batch_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "63ffeba72133b618fe082e33c0125e0e3c9c9062",
+        "token": "be59ebecf62a52ad22870c1d10383e8a949bae87",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -89,7 +89,7 @@ def fetch_topics(batch_id, subject_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "63ffeba72133b618fe082e33c0125e0e3c9c9062",
+        "token": "be59ebecf62a52ad22870c1d10383e8a949bae87",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -106,7 +106,7 @@ def fetch_lessons(batch_id, subject_id, topic_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "63ffeba72133b618fe082e33c0125e0e3c9c9062",
+        "token": "be59ebecf62a52ad22870c1d10383e8a949bae87",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -123,7 +123,7 @@ def fetch_notes(batch_id, subject_id, topic_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "63ffeba72133b618fe082e33c0125e0e3c9c9062",
+        "token": "be59ebecf62a52ad22870c1d10383e8a949bae87",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -149,10 +149,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("2025-26", callback_data="year_2025-26")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message = await update.message.reply_text("Welcome! Select your academic year:", 
+    message = await update.message.reply_text("<b>Select Which Year Batches You want 😁</b>", 
                                               parse_mode="HTML",
                                               reply_markup=reply_markup,
-                                              protect_content=True)
+                                              protect_content=False)
 
     # Schedule the deletion after 60 seconds
 
