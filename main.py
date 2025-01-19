@@ -42,11 +42,8 @@ YEAR_CLASSES = {
             "Vijeta 1.0 Diamond (11+12) Chem": "134",
         },
         "12th": {
-            "Vijeta 1.0 Silver Chem": "125",
             "Vijeta 1.0 Silver (PCM)": "126",
-            "Vijeta 1.0 GOLD Chem": "127",
             "Vijeta 1.0 GOLD (PCM)": "128",
-            "Vijeta 1.0 Diamond Chem": "129",
             "Vijeta 1.0 Diamond (PCM)": "130",
             "Vijeta 1.0 Gold (11+12) Chem": "132",
             "Vijeta 1.0 Silver (11+12) Chem": "133",
@@ -72,7 +69,7 @@ def fetch_subjects(batch_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "be59ebecf62a52ad22870c1d10383e8a949bae87",
+        "token": "f5bd358319e75d8add9a51e4bc9d22e9b8962aeb",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -89,7 +86,7 @@ def fetch_topics(batch_id, subject_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "be59ebecf62a52ad22870c1d10383e8a949bae87",
+        "token": "f5bd358319e75d8add9a51e4bc9d22e9b8962aeb",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -106,7 +103,7 @@ def fetch_lessons(batch_id, subject_id, topic_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "be59ebecf62a52ad22870c1d10383e8a949bae87",
+        "token": "f5bd358319e75d8add9a51e4bc9d22e9b8962aeb",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -123,7 +120,7 @@ def fetch_notes(batch_id, subject_id, topic_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": "be59ebecf62a52ad22870c1d10383e8a949bae87",
+        "token": "f5bd358319e75d8add9a51e4bc9d22e9b8962aeb",
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -145,8 +142,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     keyboard = [
-        [InlineKeyboardButton("2024-25", callback_data="year_2024-25")],
-        [InlineKeyboardButton("2025-26", callback_data="year_2025-26")],
+        [InlineKeyboardButton("𝟐𝟎𝟐𝟒 ✦ 𝟐𝟎𝟐𝟓", callback_data="year_2024-25")],
+        [InlineKeyboardButton("𝟐𝟎𝟐𝟓 ✦ 𝟐𝟎𝟐𝟔", callback_data="year_2025-26")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
     message = await update.message.reply_text("<b>Select Which Year Batches You want 😁</b>", 
@@ -186,10 +183,10 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data.startswith("year_"):
         year = data.split("_")[1]
         keyboard = [
-            [InlineKeyboardButton("11th", callback_data=f"class_{year}_11th")],
-            [InlineKeyboardButton("12th", callback_data=f"class_{year}_12th")],
-            [InlineKeyboardButton("13th", callback_data=f"class_{year}_13th")],
-            [InlineKeyboardButton("CrashCourse", callback_data=f"class_{year}_CrashCourse")],
+            [InlineKeyboardButton("𝟭𝟭𝘁𝗵", callback_data=f"class_{year}_11th")],
+            [InlineKeyboardButton("𝟭𝟮𝘁𝗵", callback_data=f"class_{year}_12th")],
+            [InlineKeyboardButton("𝟭𝟯𝘁𝗵", callback_data=f"class_{year}_13th")],
+            [InlineKeyboardButton("𝗖𝗿𝗮𝘀𝗵𝗖𝗼𝘂𝗿𝘀𝗲", callback_data=f"class_{year}_CrashCourse")],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_text(
