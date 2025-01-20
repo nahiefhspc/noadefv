@@ -156,6 +156,22 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
                                               protect_content=True)
 
     # Schedule the deletion after 60 seconds
+    job_queue = context.job_queue
+    job_queue.run_once(delete_buttons, 10, context=update.message)
+
+# Function to delete buttons and send a new message after 60 seconds
+async def delete_buttons(context):
+    # Retrieve the message passed in the job's context
+    message = context.job.context  # This is the message you passed when scheduling the job
+
+    # Delete the original message
+    await message.delete()
+
+    # Send new message indicating buttons are deleted
+    await context.bot.send_message(message.chat.id, text="All buttons are deleted. You can access again.")
+
+
+# Callback for button interactions
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
     await query.answer()
