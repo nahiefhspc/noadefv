@@ -4,7 +4,7 @@ import requests
 import html
 
 # Replace with your bot token
-BOT_TOKEN = "6361809314:AAGYdd-ksah0cXvHdRdyh0oHSP8SIQoHT0o"
+BOT_TOKEN = "7880934596:AAG7_DAoSg6MDyB2sQ8jfc6NWX6TQoTBRgI"
 
 # Function to get token from the URL
 def get_token_from_url():
