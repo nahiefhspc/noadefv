@@ -26,22 +26,25 @@ YEAR_CLASSES = {
             "Vijay 3.0(PCM)": "110",
             "Vijay 4.0(PCM)": "116",
             "Vijay 5.0(PCM)": "119",
+            
         },
         "12th": {
             "Vijeta 2.0 Chem Spl": "89",
-            "Vijeta 4.0 (PCM)": "99",
+            "Vijeta 4.0 (PCM)": "99",            
         },
         "13th": {
-            "Vishesh 2.0 (PCM)": "100",
-            "Vishesh 3.0 (PCM)": "108",
-            "Vishesh 4.0 (PCM)": "114",
-            "Vishesh 5.0 (PCM)": "117",
-        },
+             "Vishesh 2.0 (PCM)": "100",
+             "Vishesh 3.0 (PCM)": "108",
+             "Vishesh 4.0 (PCM)": "114",
+             "Vishesh 5.0 (PCM)": "117",
+             
+         },    
+        
         "CrashCourse": {
             "Adv Ranker (PCM)": "94",
             "Victroy 1.0 (PCM)": "123",
             "Test Series (PCM)": "124",
-        },
+            },            
     },
     "2025-26": {
         "11th": {
@@ -64,7 +67,12 @@ YEAR_CLASSES = {
 # Mapping of user IDs to indexes
 USER_ID_TO_IDX = {
     "7423360734": 1,
-    "9374253829": 2,
+    "5034929962": 2,
+    "5487643307": 3,
+    "7137002799": 4,
+    "6038536979": 5,
+    "1737051944": 6,
+    "6568611832": 7,
 }
 
 # Function to fetch subjects for a batch
@@ -73,7 +81,7 @@ def fetch_subjects(batch_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": TOKEN,  # Use dynamically fetched token
+        "token": TOKEN,
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -90,7 +98,7 @@ def fetch_topics(batch_id, subject_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": TOKEN,  # Use dynamically fetched token
+        "token": TOKEN,
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -107,7 +115,7 @@ def fetch_lessons(batch_id, subject_id, topic_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": TOKEN,  # Use dynamically fetched token
+        "token": TOKEN,
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -124,7 +132,7 @@ def fetch_notes(batch_id, subject_id, topic_id):
     headers = {
         "Accept": "application/json",
         "origintype": "web",
-        "token": TOKEN,  # Use dynamically fetched token
+        "token": TOKEN,
         "usertype": "2",
         "Content-Type": "application/x-www-form-urlencoded",
     }
@@ -146,31 +154,18 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         return
 
     keyboard = [
-        [InlineKeyboardButton("2024-25", callback_data="year_2024-25")],
-        [InlineKeyboardButton("2025-26", callback_data="year_2025-26")],
+        [InlineKeyboardButton("𝟐𝟎𝟐𝟒 ✦ 𝟐𝟎𝟐𝟓", callback_data="year_2024-25")],
+        [InlineKeyboardButton("𝟐𝟎𝟐𝟓 ✦ 𝟐𝟎𝟐𝟔", callback_data="year_2025-26")],
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    message = await update.message.reply_text("Welcome! Select your academic year:", 
+    message = await update.message.reply_text("<b>Select Which Year Batches You want 😁</b>", 
                                               parse_mode="HTML",
                                               reply_markup=reply_markup,
-                                              protect_content=True)
+                                              protect_content=False)
 
     # Schedule the deletion after 60 seconds
-    job_queue = context.job_queue
-    job_queue.run_once(delete_buttons, 10, context=update.message)
 
 # Function to delete buttons and send a new message after 60 seconds
-async def delete_buttons(context):
-    # Retrieve the message passed in the job's context
-    message = context.job.context  # This is the message you passed when scheduling the job
-
-    # Delete the original message
-    await message.delete()
-
-    # Send new message indicating buttons are deleted
-    await context.bot.send_message(message.chat.id, text="All buttons are deleted. You can access again.")
-
-
 # Callback for button interactions
 async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     query = update.callback_query
@@ -189,10 +184,10 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
     if data.startswith("year_"):
         year = data.split("_")[1]
         keyboard = [
-            [InlineKeyboardButton("11th", callback_data=f"class_{year}_11th")],
-            [InlineKeyboardButton("12th", callback_data=f"class_{year}_12th")],
-            [InlineKeyboardButton("13th", callback_data=f"class_{year}_13th")],
-            [InlineKeyboardButton("CrashCourse", callback_data=f"class_{year}_CrashCourse")],
+            [InlineKeyboardButton("𝟭𝟭𝘁𝗵", callback_data=f"class_{year}_11th")],
+            [InlineKeyboardButton("𝟭𝟮𝘁𝗵", callback_data=f"class_{year}_12th")],
+            [InlineKeyboardButton("𝟭𝟯𝘁𝗵", callback_data=f"class_{year}_13th")],
+            [InlineKeyboardButton("𝗖𝗿𝗮𝘀𝗵𝗖𝗼𝘂𝗿𝘀𝗲", callback_data=f"class_{year}_CrashCourse")],
         ]
         reply_markup = InlineKeyboardMarkup(keyboard)
         await query.edit_message_text(
@@ -226,6 +221,11 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 parse_mode="HTML",
                 reply_markup=reply_markup
             )
+        else:
+            await query.edit_message_text(
+                text="<b>No subjects found for this batch.</b>",
+                parse_mode="HTML"
+            )
 
     elif data.startswith("subject_"):
         _, batch_id, subject_id = data.split("_")
@@ -241,29 +241,48 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
                 parse_mode="HTML",
                 reply_markup=reply_markup
             )
+        else:
+            await query.edit_message_text(
+                text="<b>No topics found for this subject.</b>",
+                parse_mode="HTML"
+            )
 
     elif data.startswith("topic_"):
         _, batch_id, subject_id, topic_id = data.split("_")
         lessons = fetch_lessons(batch_id, subject_id, topic_id)
         notes = fetch_notes(batch_id, subject_id, topic_id)
 
-        lessons_str = "\n".join([lesson["lessonName"] for lesson in lessons]) if lessons else "No lessons found."
-        notes_str = "\n".join([note["notesName"] for note in notes]) if notes else "No notes found."
-
-        response_text = f"<b>Lessons:</b>\n{lessons_str}\n\n<b>Notes:</b>\n{notes_str}"
-        await query.edit_message_text(
-            text=response_text,
+        if lessons:
+            keyboard = [[InlineKeyboardButton(lesson["lessonName"], url=f'https://vercelsop.vercel.app/{idx}/{lesson["id"]}')] for lesson in lessons]
+            if notes:
+                keyboard.append([InlineKeyboardButton("Notes", callback_data=f"notes_{batch_id}_{subject_id}_{topic_id}")])
+            reply_markup = InlineKeyboardMarkup(keyboard)
+            await query.edit_message_text(text="Select a lesson or view notes:", reply_markup=reply_markup)
+        elif notes:
+            notes_message = "\n\n".join([f"🌟<a href=\"{html.escape(note['docUrl'])}\">{html.escape(note['docTitle'])}</a>" for note in notes])
+            await query.edit_message_text(text=f"<b> 𝐀𝐋𝐋 𝐍𝐎𝐓𝐄𝐒 𝐁𝐄𝐋𝐎𝐖 👇</b>\n------------------------------------------------------------\n\n<b>{notes_message}</b>\n------------------------------------------------------------\n\n<b>𝗠𝗮𝗱𝗲 𝗕𝘆 𝗛𝗔𝗖𝗞𝗛𝗘𝗜𝗦𝗧 😈</b>\nCONTACT US - @TEAM_OPTECH\n\nYou Are on Last page for more Lectures,Notes - /start",
             parse_mode="HTML"
-        )
+            )
+        else:
+            await query.edit_message_text(text="No lessons or notes found for this topic.")
 
-# Main function to start the bot
+    elif data.startswith("notes_"):
+        _, batch_id, subject_id, topic_id = data.split("_")
+        notes = fetch_notes(batch_id, subject_id, topic_id)
+        if notes:
+            notes_message = "\n\n".join([f"🌟<a href=\"{html.escape(note['docUrl'])}\">{html.escape(note['docTitle'])}</a>" for note in notes])
+            await query.edit_message_text(text=f"<b> 𝐀𝐋𝐋 𝐍𝐎𝐓𝐄𝐒 𝐁𝐄𝐋𝐎𝐖 👇</b>\n------------------------------------------------------------\n\n<b>{notes_message}</b>\n------------------------------------------------------------\n\n<b>𝗠𝗮𝗱𝗲 𝗕𝘆 𝗛𝗔𝗖𝗞𝗛𝗘𝗜𝗦𝗧 😈</b>\nCONTACT US - @TEAM_OPTECH\n\nYou Are on Last page for more Lectures,Notes - /start",
+            parse_mode="HTML"
+            )
+        else:
+            await query.edit_message_text(text="No notes available.")
+
+# Main function
 def main():
-    application = Application.builder().token(BOT_TOKEN).build()
-
-    application.add_handler(CommandHandler("start", start))
-    application.add_handler(CallbackQueryHandler(button))
-
-    application.run_polling()
+    app = Application.builder().token(BOT_TOKEN).build()
+    app.add_handler(CommandHandler("start", start))
+    app.add_handler(CallbackQueryHandler(button))
+    app.run_polling()
 
 if __name__ == "__main__":
     main()
