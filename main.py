@@ -254,8 +254,8 @@ async def button(update: Update, context: ContextTypes.DEFAULT_TYPE):
 
         if lessons:
             keyboard = [
-                [InlineKeyboardButton(lesson["lessonName"], web_app=WebAppInfo(url=f'https://vercelsop.vercel.app/{idx}/{lesson["id"]}'))]
-                for idx, lesson in enumerate(lessons)
+                [InlineKeyboardButton(lesson["lessonName"], web_app=WebAppInfo(url=f'https://vercelsop.vercel.app/{lesson["id"]}'))]
+                for lesson in enumerate(lessons)
             ]
             if notes:
                 keyboard.append([InlineKeyboardButton("Notes", callback_data=f"notes_{batch_id}_{subject_id}_{topic_id}")])
