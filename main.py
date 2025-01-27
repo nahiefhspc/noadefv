@@ -161,7 +161,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     message = await update.message.reply_text("<b>Select Which Year Batches You want 😁</b>", 
                                               parse_mode="HTML",
                                               reply_markup=reply_markup,
-                                              protect_content=False)
+                                              protect_content=True)
 
     # Schedule the deletion after 60 seconds
 
