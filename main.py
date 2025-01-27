@@ -1,4 +1,4 @@
-from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton
+from telegram import Update, InlineKeyboardMarkup, InlineKeyboardButton, WebAppInfo
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
 import requests
 import html
