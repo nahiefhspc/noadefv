@@ -128,8 +128,9 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         for course in COURSES
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await update.message.reply_text("<b>🏅Welcome to Our Bot This is made by HACKHEIST 😈</b>\n\n<b>If you don't know how to use bot Click on below button 🥰\n<a href='https://t.me/hotousebotes/6'>𝐇𝐎𝐖 𝐓𝐎 𝐔𝐒𝐄 𝐁𝐎𝐓 ?🧐</a></b>\n\nNOTE - M@TION tech Team wants to Remove this bot message me @HACKHEISTBOT\nTech Team Check <b><a href='https://t.me/RemoveIIT/3'>𝗚𝗨𝗜𝗗𝗘𝗟𝗜𝗡𝗘𝗦</a></b>\n\n<b><a href='https://t.me/HIDDEN_OFFICIALS_3/3'>✮:▹ 𝗖𝗹𝗶𝗰𝗸 𝗧𝗼 𝗚𝗲𝘁 𝗠𝗢𝗥𝗘 🤩</a></b>", 
+    await update.message.reply_text("<b>🏅Welcome to Our Bot This is made by HACKHEIST 😈</b>\n\n<b>If you don't know how to use bot Click on below button 🥰\n<a href='https://t.me/hotousebotes/6'>𝐇𝐎𝐖 𝐓𝐎 𝐔𝐒𝐄 𝐁𝐎𝐓 ?🧐</a></b>\n\nNOTE - M@TION tech Team wants to Remove this bot message me @HACKHEISTBOT\nTech Team Check <b><a href='https://t.me/RemoveIIT/3'>𝗚𝗨𝗜𝗗𝗘𝗟𝗜𝗡𝗘𝗦</a></b>\n\n<b><a href='https://t.me/HIDDEN_OFFICIALS_5/3'>✮:▹ 𝗖𝗹𝗶𝗰𝗸 𝗧𝗼 𝗚𝗲𝘁 𝗠𝗢𝗥𝗘 🤩</a></b>", 
         reply_markup=reply_markup,
+        protect_content=True,
         parse_mode='HTML'
     )
 
@@ -199,11 +200,12 @@ async def topic_callback(update: Update, context: ContextTypes.DEFAULT_TYPE):
             notes_title = note.get("notes_title", "N/A")
             note_url = note.get("notes", "N/A")
             notes_message += f"☆NAME - {notes_title}\n:-)LINK - {note_url}\n😈𝐁𝐘 𝐇𝐀𝐂𝐊𝐇𝐄𝐈𝐒𝐓\n\n"
+            
     else:
         notes_message += "Failed to fetch notes.\n"
 
-    await query.message.reply_text(video_message)
-    await query.message.reply_text(notes_message)
+    await query.message.reply_text(video_message, protect_content=True)
+    await query.message.reply_text(notes_message, protect_content=True)
 
 async def go_back_to_courses(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Go back to course selection."""
@@ -214,7 +216,7 @@ async def go_back_to_courses(update: Update, context: ContextTypes.DEFAULT_TYPE)
         for course in COURSES
     ]
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await query.message.edit_text("Choose a course:", reply_markup=reply_markup)
+    await query.message.edit_text("Choose a course:", reply_markup=reply_markup, protect_content=True)
 
 async def go_back_to_subjects(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Go back to subject selection."""
@@ -228,7 +230,7 @@ async def go_back_to_subjects(update: Update, context: ContextTypes.DEFAULT_TYPE
     ]
     keyboard.append([InlineKeyboardButton("Go back", callback_data="go_back_courses")])  # Go back to course selection
     reply_markup = InlineKeyboardMarkup(keyboard)
-    await query.message.edit_text("Choose a subject:", reply_markup=reply_markup)
+    await query.message.edit_text("Choose a subject:", reply_markup=reply_markup, protect_content=True)
 
 def fetch_playback_url(join_url):
     """Extract playback URL from join_url."""
@@ -244,7 +246,7 @@ def fetch_playback_url(join_url):
 
 def main():
     """Run the bot."""
-    application = Application.builder().token("7915696862:AAGg61HVMTydXAK2UrdfclNBRgsDbl_b2rY").build()
+    application = Application.builder().token("7928178215:AAHrEazWka1JSkF8_5ym1Q1oxFRC-QLj5ow").build()
 
     application.add_handler(CommandHandler("start", start))
     application.add_handler(CallbackQueryHandler(course_callback, pattern="^course_"))
